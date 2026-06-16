@@ -10,7 +10,7 @@
         :name="amountFieldId"
         type="number"
         v-model="amount"
-        class="mr-2 outline-none w-full"
+        class="outline-none w-full"
         :aria-label="amountAriaLabel"
       />
     </div>
@@ -23,7 +23,7 @@
         :aria-label="currencyAriaLabel"
         @change="onCurrencyChange"
       >
-        <option v-for="item in currencies" :key="item.id" :value="item.id" class="text-neutral-400">
+        <option v-for="item in currencies" :key="item.id" :value="item.id">
           {{ item.name }}
         </option>
       </select>
@@ -44,13 +44,13 @@ const props = defineProps<{
   currencyAriaLabel: string
 }>()
 
-const amountFieldId = computed(() => `${props.fieldPrefix}-amount`)
-const currencyFieldId = computed(() => `${props.fieldPrefix}-currency`)
-
 const amount = defineModel<number>('amount', { required: true })
 const emit = defineEmits<{
   (e: 'updateCurrency', currencyId: number): void
 }>()
+
+const amountFieldId = computed(() => `${props.fieldPrefix}-amount`)
+const currencyFieldId = computed(() => `${props.fieldPrefix}-currency`)
 
 const selectedCurrencyId = computed((): number | undefined => {
   return props.currency?.id

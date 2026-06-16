@@ -15,7 +15,7 @@
         role="group"
         aria-label="Pola konwersji walut"
       >
-        <CoverterInput
+        <ConverterInput
           field-prefix="from"
           v-model:amount="convertedFromAmount"
           :currency="fromCurrency"
@@ -25,7 +25,7 @@
           currency-aria-label="Waluta źródłowa"
           @updateCurrency="uppdateFromCurrency"
         />
-        <CoverterInput
+        <ConverterInput
           field-prefix="to"
           v-model:amount="convertedToAmount"
           :currency="toCurrency"
@@ -41,7 +41,7 @@
 </template>
 
 <script setup lang="ts">
-import CoverterInput from './components/CoverterInput.vue'
+import ConverterInput from './components/ConverterInput.vue'
 import ConverterHeader from './components/ConverterHeader.vue'
 import { useCurrencyConverter } from '@/composables/useCurrencyConverter'
 
