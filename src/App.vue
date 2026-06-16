@@ -11,7 +11,7 @@
         :toCurrency="toCurrency!"
       />
       <div
-        class="flex flex-col items-start justify-center gap-3"
+        class="flex flex-col items-start justify-center gap-4"
         role="group"
         aria-label="Pola konwersji walut"
       >
