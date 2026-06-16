@@ -9,6 +9,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
+import { formatAdaptive } from '@/composables/useAdaptiveNumberFormat'
 import type { Currency } from '@/types/api'
 
 const props = defineProps<{
@@ -27,9 +28,10 @@ const fromCurrencyInfo = computed(() => {
 
 const toCurrencyInfo = computed(() => {
   const currency = props.toCurrency
+  const formattedAmount = formatAdaptive(props.multiplier)
   if (currency.symbol_first) {
-    return `${currency.symbol}${props.multiplier.toFixed(2).replace('.', ',')}`
+    return `${currency.symbol}${formattedAmount}`
   }
-  return `${props.multiplier.toFixed(2).replace('.', ',')}${currency.symbol} `
+  return `${formattedAmount}${currency.symbol} `
 })
 </script>
