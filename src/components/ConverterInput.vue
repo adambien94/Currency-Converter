@@ -44,7 +44,7 @@ const props = defineProps<{
   currencyAriaLabel: string
 }>()
 
-const amount = defineModel<number>('amount', { required: true })
+const amount = defineModel<number | undefined>('amount', { required: true })
 const emit = defineEmits<{
   (e: 'updateCurrency', currencyId: number): void
 }>()
