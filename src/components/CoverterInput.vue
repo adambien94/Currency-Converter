@@ -1,14 +1,22 @@
 <template>
   <div
+    role="group"
+    :aria-label="groupAriaLabel"
     class="flex w-full items-center justify-between focus-within:outline-1 border border-neutral-700 bg-neutral-900 rounded-xl overflow-hidden relative"
   >
     <div class="w-2/5">
-      <input type="number" v-model="amount" class="mr-2 outline-none w-full" />
+      <input
+        type="number"
+        v-model="amount"
+        class="mr-2 outline-none w-full"
+        :aria-label="amountAriaLabel"
+      />
     </div>
     <div class="currency-select-wrapper flex-1 relative">
       <select
         class="currency-select w-full text-right outline-none focus:bg-neutral-950 appearance-none"
         :value="selectedCurrencyId"
+        :aria-label="currencyAriaLabel"
         @change="onCurrencyChange"
       >
         <option v-for="item in currencies" :key="item.id" :value="item.id" class="text-neutral-400">
@@ -26,6 +34,9 @@ import type { Currency } from '@/types/api'
 const props = defineProps<{
   currency: Currency | undefined
   currencies: Currency[]
+  groupAriaLabel: string
+  amountAriaLabel: string
+  currencyAriaLabel: string
 }>()
 
 const amount = defineModel<number>('amount', { required: true })
@@ -38,7 +49,13 @@ const selectedCurrencyId = computed((): number | undefined => {
 })
 
 const onCurrencyChange = (event: Event) => {
-  const id = Number((event.target as HTMLSelectElement).value)
+  const select = event.target as HTMLSelectElement
+  const id = Number(select.value)
+
+  if (selectedCurrencyId.value !== undefined) {
+    select.value = String(selectedCurrencyId.value)
+  }
+
   emit('updateCurrency', id)
 }
 </script>
