@@ -19,11 +19,22 @@ export type CurrenciesResponse = {
   response: Currency[]
 }
 
-export type ConvertResponse = {
+export type ConvertResult = {
   timestamp: number
   date: string
   from: string
   to: string
   amount: number
   value: number
+}
+
+export type ConvertResponse = {
+  meta: {
+    code: number
+    disclaimer: string
+  }
+  amount: number
+  date: string
+  from: string
+  response: ConvertResult
 }

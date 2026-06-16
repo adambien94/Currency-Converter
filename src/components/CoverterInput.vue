@@ -6,6 +6,8 @@
   >
     <div class="w-2/5">
       <input
+        :id="amountFieldId"
+        :name="amountFieldId"
         type="number"
         v-model="amount"
         class="mr-2 outline-none w-full"
@@ -14,6 +16,8 @@
     </div>
     <div class="currency-select-wrapper flex-1 relative">
       <select
+        :id="currencyFieldId"
+        :name="currencyFieldId"
         class="currency-select w-full text-right outline-none focus:bg-neutral-950 appearance-none"
         :value="selectedCurrencyId"
         :aria-label="currencyAriaLabel"
@@ -32,12 +36,16 @@ import { computed } from 'vue'
 import type { Currency } from '@/types/api'
 
 const props = defineProps<{
+  fieldPrefix: string
   currency: Currency | undefined
   currencies: Currency[]
   groupAriaLabel: string
   amountAriaLabel: string
   currencyAriaLabel: string
 }>()
+
+const amountFieldId = computed(() => `${props.fieldPrefix}-amount`)
+const currencyFieldId = computed(() => `${props.fieldPrefix}-currency`)
 
 const amount = defineModel<number>('amount', { required: true })
 const emit = defineEmits<{

@@ -16,6 +16,7 @@
         aria-label="Pola konwersji walut"
       >
         <CoverterInput
+          field-prefix="from"
           v-model:amount="convertedFromAmount"
           :currency="fromCurrency"
           :currencies="currencies"
@@ -25,6 +26,7 @@
           @updateCurrency="uppdateFromCurrency"
         />
         <CoverterInput
+          field-prefix="to"
           v-model:amount="convertedToAmount"
           :currency="toCurrency"
           :currencies="currencies"
