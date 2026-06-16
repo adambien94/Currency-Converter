@@ -7,8 +7,8 @@
     <div class="lg:w-94 w-full max-w-94">
       <ConverterHeader
         :multiplier="multiplier"
-        :fromCurrencyName="fromCurrency?.name"
-        :toCurrencyName="toCurrency?.name"
+        :fromCurrency="fromCurrency!"
+        :toCurrency="toCurrency!"
       />
       <div
         class="flex flex-col items-start justify-center gap-3"

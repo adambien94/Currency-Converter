@@ -3,7 +3,7 @@ import { getCurrencies } from '@/api/getCurrencies'
 import { convertCurrencies } from '@/api/convertCurrencies'
 import type { Currency } from '@/types/api'
 
-const INIT_FROM_CURRENCY_ID = 114
+const INIT_FROM_CURRENCY_ID = 147
 const INIT_TO_CURRENCY_ID = 46
 
 export function useCurrencyConverter() {
@@ -15,16 +15,18 @@ export function useCurrencyConverter() {
   const currencies = ref<Currency[]>([])
 
   const convertedFromAmount = computed({
-    get: () => fromAmount.value,
+    get: () => fromAmount.value || undefined,
     set: (newVal) => {
+      if (newVal === undefined) return
       fromAmount.value = newVal
       toAmount.value = Number((newVal * multiplier.value).toFixed(2))
     },
   })
 
   const convertedToAmount = computed({
-    get: () => toAmount.value,
+    get: () => toAmount.value || undefined,
     set: (newVal) => {
+      if (newVal === undefined) return
       toAmount.value = newVal
       fromAmount.value = Number((newVal / multiplier.value).toFixed(2))
     },
