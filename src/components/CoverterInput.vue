@@ -1,9 +1,17 @@
 <script setup lang="ts">
+import { computed } from 'vue'
+import type { Currency } from '@/types/api'
+
+const props = defineProps<{
+  currency: Currency | undefined
+  currencies: Currency[]
+}>()
+
 const amount = defineModel<number>('amount', { required: true })
 
-defineProps<{
-  currency: string
-}>()
+const selectedCurrency = computed((): string => {
+  return props.currency?.name ?? ''
+})
 </script>
 
 <template>
@@ -17,7 +25,15 @@ defineProps<{
       <select
         class="currency-select w-full text-right outline-none focus:bg-neutral-950 appearance-none"
       >
-        <option :value="currency" class="text-neutral-400">{{ currency }}</option>
+        <option
+          v-for="currency in currencies"
+          :key="currency.id"
+          :value="selectedCurrency"
+          :selected="selectedCurrency === currency.name"
+          class="text-neutral-400"
+        >
+          {{ currency.name }}
+        </option>
       </select>
     </div>
   </div>
