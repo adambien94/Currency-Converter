@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="error && !isDataFetched"
+    v-if="error"
     class="flex h-screen flex-col items-center justify-center p-4"
     role="alert"
     aria-live="assertive"
@@ -52,7 +52,6 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
 import ConverterInput from './ConverterInput.vue'
 import ConverterHeader from './ConverterHeader.vue'
 import { useCurrencyConverter } from '@/composables/useCurrencyConverter'
@@ -69,8 +68,6 @@ const {
   setToCurrency,
   init,
 } = useCurrencyConverter()
-
-const isDataFetched = computed(() => Array.isArray(currencies.value) && currencies.value.length > 0)
 
 await init()
 </script>
