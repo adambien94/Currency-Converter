@@ -1,7 +1,7 @@
 import { ref, computed } from 'vue'
 import { getCurrencies } from '@/api/getCurrencies'
 import { convertCurrencies } from '@/api/convertCurrencies'
-import { roundAdaptive } from '@/composables/useAdaptiveNumberFormat'
+import { useFormatNumber } from '@/composables/useFormatNumber'
 import type { Currency } from '@/types/api'
 
 const INIT_FROM_CURRENCY_CODE = 'EUR'
@@ -16,12 +16,14 @@ export function useCurrencyConverter() {
   const currencies = ref<Currency[]>([])
   const error = ref<string | null>(null)
 
+  const { roundNumber } = useFormatNumber()
+
   const convertedFromAmount = computed({
     get: () => fromAmount.value || undefined,
     set: (newVal) => {
       if (newVal === undefined) return
       fromAmount.value = newVal
-      toAmount.value = roundAdaptive(newVal * multiplier.value)
+      toAmount.value = roundNumber(newVal * multiplier.value)
     },
   })
 
@@ -30,14 +32,14 @@ export function useCurrencyConverter() {
     set: (newVal) => {
       if (newVal === undefined) return
       toAmount.value = newVal
-      fromAmount.value = roundAdaptive(newVal / multiplier.value)
+      fromAmount.value = roundNumber(newVal / multiplier.value)
     },
   })
 
   const fetchCurriencyConvertion = async (from: Currency, to: Currency) => {
     const res = await convertCurrencies(from?.short_code!, to?.short_code!, fromAmount.value)
     multiplier.value = res.value / res.amount
-    toAmount.value = roundAdaptive(res.value)
+    toAmount.value = roundNumber(res.value)
   }
 
   const setInitCurrencies = () => {
@@ -55,7 +57,7 @@ export function useCurrencyConverter() {
     setInitCurrencies()
   }
 
-  const updateFromCurrency = async (currencyId: number) => {
+  const setFromCurrency = async (currencyId: number) => {
     const currency = currencies.value.find(({ id }) => id === currencyId)
     if (!currency) return
     try {
@@ -67,7 +69,7 @@ export function useCurrencyConverter() {
     }
   }
 
-  const uppdateToCurrency = async (currencyId: number) => {
+  const setToCurrency = async (currencyId: number) => {
     const currency = currencies.value.find(({ id }) => id === currencyId)
     if (!currency) return
     try {
@@ -100,8 +102,8 @@ export function useCurrencyConverter() {
     convertedFromAmount,
     convertedToAmount,
     error,
-    updateFromCurrency,
-    uppdateToCurrency,
+    setFromCurrency,
+    setToCurrency,
     init,
   }
 }

@@ -9,8 +9,10 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { formatAdaptive } from '@/composables/useAdaptiveNumberFormat'
+import { useFormatNumber } from '@/composables/useFormatNumber'
 import type { Currency } from '@/types/api'
+
+const { formatStrNumber } = useFormatNumber()
 
 const props = defineProps<{
   multiplier: number
@@ -28,7 +30,7 @@ const fromCurrencyInfo = computed(() => {
 
 const toCurrencyInfo = computed(() => {
   const currency = props.toCurrency
-  const formattedAmount = formatAdaptive(props.multiplier)
+  const formattedAmount = formatStrNumber(props.multiplier)
 
   return currency.symbol_first
     ? `${currency.symbol}${formattedAmount}`

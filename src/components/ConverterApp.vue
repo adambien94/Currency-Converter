@@ -34,7 +34,7 @@
           group-aria-label="Source amount"
           amount-aria-label="Amount to convert"
           currency-aria-label="Source currency"
-          @updateCurrency="updateFromCurrency"
+          @updateCurrency="setFromCurrency"
         />
         <ConverterInput
           field-prefix="to"
@@ -44,7 +44,7 @@
           group-aria-label="Target amount"
           amount-aria-label="Converted amount"
           currency-aria-label="Target currency"
-          @updateCurrency="uppdateToCurrency"
+          @updateCurrency="setToCurrency"
         />
       </div>
     </div>
@@ -65,8 +65,8 @@ const {
   convertedFromAmount,
   convertedToAmount,
   error,
-  updateFromCurrency,
-  uppdateToCurrency,
+  setFromCurrency,
+  setToCurrency,
   init,
 } = useCurrencyConverter()
 
