@@ -20,18 +20,18 @@ const props = defineProps<{
 
 const fromCurrencyInfo = computed(() => {
   const currency = props.fromCurrency
-  if (currency.symbol_first) {
-    return `${currency.symbol}1 is equivalent`
-  }
-  return `1${currency.symbol} is equivalent`
+
+  return currency.symbol_first
+    ? `${currency.symbol}1 is equivalent`
+    : `1${currency.symbol} is equivalent`
 })
 
 const toCurrencyInfo = computed(() => {
   const currency = props.toCurrency
   const formattedAmount = formatAdaptive(props.multiplier)
-  if (currency.symbol_first) {
-    return `${currency.symbol}${formattedAmount}`
-  }
-  return `${formattedAmount}${currency.symbol} `
+
+  return currency.symbol_first
+    ? `${currency.symbol}${formattedAmount}`
+    : `${formattedAmount}${currency.symbol}`
 })
 </script>
