@@ -6,7 +6,7 @@ const API_KEY = import.meta.env.VITE_API_KEY
 
 export async function getCurrencies(): Promise<Currency[]> {
   const res = await fetch(`${BASE_URL}${ENDPOINT}?api_key=${API_KEY}`)
-  if (!res.ok) throw new Error('Failed to fetch currencies')
+  if (!res.ok) throw new Error('Failed to fetch currencies.')
   const data = (await res.json()) as CurrenciesResponse
   return data.response.sort((a, b) => a.name.localeCompare(b.name))
 }

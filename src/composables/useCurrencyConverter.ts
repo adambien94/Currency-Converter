@@ -4,8 +4,8 @@ import { convertCurrencies } from '@/api/convertCurrencies'
 import { roundAdaptive } from '@/composables/useAdaptiveNumberFormat'
 import type { Currency } from '@/types/api'
 
-const INIT_FROM_CURRENCY_ID = 147
-const INIT_TO_CURRENCY_ID = 46
+const INIT_FROM_CURRENCY_CODE = 'EUR'
+const INIT_TO_CURRENCY_CODE = 'USD'
 
 export function useCurrencyConverter() {
   const fromCurrency = ref<Currency>()
@@ -14,6 +14,7 @@ export function useCurrencyConverter() {
   const toAmount = ref<number>(0)
   const multiplier = ref<number>(0)
   const currencies = ref<Currency[]>([])
+  const error = ref<string | null>(null)
 
   const convertedFromAmount = computed({
     get: () => fromAmount.value || undefined,
@@ -40,8 +41,12 @@ export function useCurrencyConverter() {
   }
 
   const setInitCurrencies = () => {
-    fromCurrency.value = currencies.value.find(({ id }) => id === INIT_FROM_CURRENCY_ID)
-    toCurrency.value = currencies.value.find(({ id }) => id === INIT_TO_CURRENCY_ID)
+    fromCurrency.value = currencies.value.find(
+      ({ short_code }) => short_code === INIT_FROM_CURRENCY_CODE,
+    )
+    toCurrency.value = currencies.value.find(
+      ({ short_code }) => short_code === INIT_TO_CURRENCY_CODE,
+    )
   }
 
   const fetchCurrencies = async () => {
@@ -50,21 +55,41 @@ export function useCurrencyConverter() {
     setInitCurrencies()
   }
 
-  const uppdateFromCurrency = async (currencyId: number) => {
+  const updateFromCurrency = async (currencyId: number) => {
     const currency = currencies.value.find(({ id }) => id === currencyId)
-    await fetchCurriencyConvertion(currency!, toCurrency.value!)
-    fromCurrency.value = currency
+    if (!currency) return
+    try {
+      await fetchCurriencyConvertion(currency, toCurrency.value!)
+      fromCurrency.value = currency
+      error.value = null
+    } catch (e) {
+      error.value = handleError(e)
+    }
   }
 
   const uppdateToCurrency = async (currencyId: number) => {
     const currency = currencies.value.find(({ id }) => id === currencyId)
-    await fetchCurriencyConvertion(fromCurrency.value!, currency!)
-    toCurrency.value = currency
+    if (!currency) return
+    try {
+      await fetchCurriencyConvertion(fromCurrency.value!, currency)
+      toCurrency.value = currency
+      error.value = null
+    } catch (e) {
+      error.value = handleError(e)
+    }
   }
 
   const init = async () => {
-    await fetchCurrencies()
-    await fetchCurriencyConvertion(fromCurrency.value!, toCurrency.value!)
+    try {
+      await fetchCurrencies()
+      await fetchCurriencyConvertion(fromCurrency.value!, toCurrency.value!)
+    } catch (e) {
+      error.value = handleError(e)
+    }
+  }
+
+  const handleError = (e: unknown) => {
+    return e instanceof Error ? e.message : 'An unexpected error occurred.'
   }
 
   return {
@@ -74,7 +99,8 @@ export function useCurrencyConverter() {
     multiplier,
     convertedFromAmount,
     convertedToAmount,
-    uppdateFromCurrency,
+    error,
+    updateFromCurrency,
     uppdateToCurrency,
     init,
   }

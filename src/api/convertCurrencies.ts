@@ -12,7 +12,7 @@ export async function convertCurrencies(
   const res = await fetch(
     `${BASE_URL}${ENDPOINT}?api_key=${API_KEY}&from=${from}&to=${to}&amount=${amount}`,
   )
-  if (!res.ok) throw new Error('Failed to fetch currencies')
+  if (!res.ok) throw new Error('Failed to convert currencies.')
   const data = (await res.json()) as ConvertResponse
   return data.response
 }

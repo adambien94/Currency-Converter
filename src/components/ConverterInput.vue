@@ -2,7 +2,7 @@
   <div
     role="group"
     :aria-label="groupAriaLabel"
-    class="flex w-full items-center justify-between hover:border-neutral-500 focus-within:outline-1 focus-within:outline-blue-300 border border-neutral-700 rounded-xl overflow-hidden relative"
+    class="flex w-full items-center justify-between hover:border-neutral-500 focus-within:outline-1 bg-neutral-900 border border-neutral-700 rounded-xl overflow-hidden relative"
   >
     <div class="w-2/5">
       <input
@@ -18,7 +18,7 @@
       <select
         :id="currencyFieldId"
         :name="currencyFieldId"
-        class="currency-select w-full text-right outline-none focus:bg-neutral-900 appearance-none"
+        class="currency-select w-full text-right outline-none focus:bg-neutral-950 appearance-none"
         :value="selectedCurrencyId"
         :aria-label="currencyAriaLabel"
         @change="onCurrencyChange"

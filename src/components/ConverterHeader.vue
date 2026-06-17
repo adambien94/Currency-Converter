@@ -21,9 +21,9 @@ const props = defineProps<{
 const fromCurrencyInfo = computed(() => {
   const currency = props.fromCurrency
   if (currency.symbol_first) {
-    return `${currency.symbol}1 to w przeliczeniu`
+    return `${currency.symbol}1 is equivalent`
   }
-  return `1${currency.symbol} to w przeliczeniu`
+  return `1${currency.symbol} is equivalent`
 })
 
 const toCurrencyInfo = computed(() => {
