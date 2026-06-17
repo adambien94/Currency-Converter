@@ -1,8 +1,8 @@
 import type { ConvertResponse, ConvertResult } from '@/types/api'
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL
-const ENDPOINT = '/convert'
 const API_KEY = import.meta.env.VITE_API_KEY
+const ENDPOINT = '/convert'
 
 export async function convertCurrencies(
   from: string,

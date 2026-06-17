@@ -45,6 +45,7 @@ const props = defineProps<{
 }>()
 
 const amount = defineModel<number | undefined>('amount', { required: true })
+
 const emit = defineEmits<{
   (e: 'updateCurrency', currencyId: number): void
 }>()
@@ -69,10 +70,14 @@ const onCurrencyChange = (event: Event) => {
 </script>
 
 <style scoped>
-.currency-select-wrapper::before {
+.currency-select-wrapper::before,
+.currency-select-wrapper::after {
   content: '';
   display: block;
   position: absolute;
+}
+
+.currency-select-wrapper::before {
   left: 0;
   top: 8px;
   width: 1px;
@@ -81,9 +86,6 @@ const onCurrencyChange = (event: Event) => {
 }
 
 .currency-select-wrapper::after {
-  content: '';
-  display: block;
-  position: absolute;
   right: 12px;
   top: 50%;
   width: 6px;

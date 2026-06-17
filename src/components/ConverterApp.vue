@@ -8,7 +8,7 @@
     <p class="text-center text-red-400">{{ error }}</p>
   </div>
   <div
-    v-else-if="isDataFetched"
+    v-else
     class="flex h-screen flex-col items-center justify-center p-4"
     aria-label="Currency converter"
   >
@@ -70,9 +70,7 @@ const {
   init,
 } = useCurrencyConverter()
 
-const isDataFetched = computed(
-  () => Array.isArray(currencies.value) && currencies.value.length > 0 && !!multiplier.value,
-)
+const isDataFetched = computed(() => Array.isArray(currencies.value) && currencies.value.length > 0)
 
 await init()
 </script>

@@ -2,7 +2,7 @@ import { ref, computed } from 'vue'
 import { getCurrencies } from '@/api/getCurrencies'
 import { convertCurrencies } from '@/api/convertCurrencies'
 import { useFormatNumber } from '@/composables/useFormatNumber'
-import type { Currency } from '@/types/api'
+import type { Currency, ConvertResult } from '@/types/api'
 
 const INIT_FROM_CURRENCY_CODE = 'EUR'
 const INIT_TO_CURRENCY_CODE = 'USD'
@@ -37,7 +37,13 @@ export function useCurrencyConverter() {
   })
 
   const fetchCurriencyConvertion = async (from: Currency, to: Currency) => {
-    const res = await convertCurrencies(from?.short_code!, to?.short_code!, fromAmount.value)
+    let res: ConvertResult
+    if (!fromAmount.value) {
+      res = await convertCurrencies(from.short_code!, to.short_code!, 1)
+      fromAmount.value = 1
+    } else {
+      res = await convertCurrencies(from.short_code!, to.short_code!, fromAmount.value)
+    }
     multiplier.value = res.value / res.amount
     toAmount.value = roundNumber(res.value)
   }
