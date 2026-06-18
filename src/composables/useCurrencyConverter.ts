@@ -63,28 +63,28 @@ export function useCurrencyConverter() {
     setInitCurrencies()
   }
 
-  const setFromCurrency = async (currencyId: number) => {
-    const currency = currencies.value.find(({ id }) => id === currencyId)
-    if (!currency) return
+  const handleError = (e: unknown) => {
+    return e instanceof Error ? e.message : 'An unexpected error occurred.'
+  }
+
+  const setCurrency = async (from: Currency, to: Currency) => {
     try {
-      await fetchCurriencyConvertion(currency, toCurrency.value!)
-      fromCurrency.value = currency
-      error.value = null
+      await fetchCurriencyConvertion(from, to)
     } catch (e) {
       error.value = handleError(e)
     }
   }
 
+  const setFromCurrency = async (currencyId: number) => {
+    const currency = currencies.value.find(({ id }) => id === currencyId)
+    if (!currency) return
+    setCurrency(currency, toCurrency.value!)
+  }
+
   const setToCurrency = async (currencyId: number) => {
     const currency = currencies.value.find(({ id }) => id === currencyId)
     if (!currency) return
-    try {
-      await fetchCurriencyConvertion(fromCurrency.value!, currency)
-      toCurrency.value = currency
-      error.value = null
-    } catch (e) {
-      error.value = handleError(e)
-    }
+    setCurrency(fromCurrency.value!, currency)
   }
 
   const init = async () => {
@@ -94,10 +94,6 @@ export function useCurrencyConverter() {
     } catch (e) {
       error.value = handleError(e)
     }
-  }
-
-  const handleError = (e: unknown) => {
-    return e instanceof Error ? e.message : 'An unexpected error occurred.'
   }
 
   return {
