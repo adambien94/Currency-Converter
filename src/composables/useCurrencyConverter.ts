@@ -38,14 +38,18 @@ export function useCurrencyConverter() {
 
   const fetchCurriencyConvertion = async (from: Currency, to: Currency) => {
     let res: ConvertResult
-    if (!fromAmount.value) {
-      res = await convertCurrencies(from.short_code!, to.short_code!, 1)
-      fromAmount.value = 1
-    } else {
-      res = await convertCurrencies(from.short_code!, to.short_code!, fromAmount.value)
+    try {
+      if (!fromAmount.value) {
+        res = await convertCurrencies(from.short_code!, to.short_code!, 1)
+        fromAmount.value = 1
+      } else {
+        res = await convertCurrencies(from.short_code!, to.short_code!, fromAmount.value)
+      }
+      multiplier.value = res.value / res.amount
+      toAmount.value = roundNumber(res.value)
+    } catch (e) {
+      error.value = handleError(e)
     }
-    multiplier.value = res.value / res.amount
-    toAmount.value = roundNumber(res.value)
   }
 
   const setInitCurrencies = () => {
@@ -63,28 +67,18 @@ export function useCurrencyConverter() {
     setInitCurrencies()
   }
 
-  const handleError = (e: unknown) => {
-    return e instanceof Error ? e.message : 'An unexpected error occurred.'
-  }
-
-  const setCurrency = async (from: Currency, to: Currency) => {
-    try {
-      await fetchCurriencyConvertion(from, to)
-    } catch (e) {
-      error.value = handleError(e)
-    }
-  }
-
   const setFromCurrency = async (currencyId: number) => {
     const currency = currencies.value.find(({ id }) => id === currencyId)
     if (!currency) return
-    setCurrency(currency, toCurrency.value!)
+    await fetchCurriencyConvertion(currency, toCurrency.value!)
+    fromCurrency.value = currency
   }
 
   const setToCurrency = async (currencyId: number) => {
     const currency = currencies.value.find(({ id }) => id === currencyId)
     if (!currency) return
-    setCurrency(fromCurrency.value!, currency)
+    await fetchCurriencyConvertion(fromCurrency.value!, currency)
+    toCurrency.value = currency
   }
 
   const init = async () => {
@@ -94,6 +88,10 @@ export function useCurrencyConverter() {
     } catch (e) {
       error.value = handleError(e)
     }
+  }
+
+  const handleError = (e: unknown) => {
+    return e instanceof Error ? e.message : 'An unexpected error occurred.'
   }
 
   return {
