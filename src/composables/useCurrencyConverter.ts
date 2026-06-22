@@ -6,6 +6,7 @@ import type { Currency, ConvertResult } from '@/types/api'
 
 const INIT_FROM_CURRENCY_CODE = 'EUR'
 const INIT_TO_CURRENCY_CODE = 'USD'
+const INITIAL_AMOUNT = 1
 
 export function useCurrencyConverter() {
   const fromCurrency = ref<Currency>()
@@ -40,8 +41,8 @@ export function useCurrencyConverter() {
     let res: ConvertResult
     try {
       if (!fromAmount.value) {
-        res = await convertCurrencies(from.short_code!, to.short_code!, 1)
-        fromAmount.value = 1
+        res = await convertCurrencies(from.short_code!, to.short_code!, INITIAL_AMOUNT)
+        fromAmount.value = INITIAL_AMOUNT
       } else {
         res = await convertCurrencies(from.short_code!, to.short_code!, fromAmount.value)
       }

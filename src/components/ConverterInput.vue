@@ -53,9 +53,7 @@ const emit = defineEmits<{
 const amountFieldId = computed(() => `${props.fieldPrefix}-amount`)
 const currencyFieldId = computed(() => `${props.fieldPrefix}-currency`)
 
-const selectedCurrencyId = computed((): number | undefined => {
-  return props.currency?.id
-})
+const selectedCurrencyId = computed((): number | undefined => props.currency?.id)
 
 const onCurrencyChange = (event: Event) => {
   const select = event.target as HTMLSelectElement
