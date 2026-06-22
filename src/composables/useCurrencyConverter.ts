@@ -63,7 +63,7 @@ export function useCurrencyConverter() {
 
   const fetchCurrencies = async () => {
     const res = await getCurrencies()
-    currencies.value = res
+    currencies.value = res.sort((a, b) => a.name.localeCompare(b.name))
     setInitCurrencies()
   }
 
